@@ -4,5 +4,8 @@ services:
   ssclash-apk-builder:
     build: .
     container_name: ssclash-apk-builder
+    environment:
+      - WARP_PRIVATE_KEY=${WARP_PRIVATE_KEY}
+      - BLANC_SUBSCRIPTION_URL=${BLANC_SUBSCRIPTION_URL}
     volumes:
       - ./output:/output
