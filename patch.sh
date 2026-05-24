@@ -49,9 +49,4 @@ if [ ! -f "\/opt\/clash\/bin\/clash" ] \&\& [ -x "\/opt\/clash\/bin\/clash-downl
 \texit 0\
 fi/' /build/pkg/etc/hotplug.d/iface/40-clash
 
-# Build APK
-echo "[*] Building custom APK..."
-apk mkpkg /build/pkg/ -o /build/luci-app-ssclash-4.5.1-r1-custom.apk
-
-echo "[*] Done: /build/luci-app-ssclash-4.5.1-r1-custom.apk"
-ls -lh /build/luci-app-ssclash-4.5.1-r1-custom.apk
+echo "[*] Patches applied"
