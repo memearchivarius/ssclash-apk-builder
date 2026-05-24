@@ -1,0 +1,8 @@
+version: "3.8"
+
+services:
+  ssclash-apk-builder:
+    build: .
+    container_name: ssclash-apk-builder
+    volumes:
+      - ./output:/output

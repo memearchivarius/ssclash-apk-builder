@@ -1,0 +1,59 @@
+x-secrets:
+  warp-private-key: &warp-priv "__WARP_PRIVATE_KEY__"
+  sub-url: &blanc-url "__BLANC_SUBSCRIPTION_URL__"
+
+mode: rule
+tproxy-port: 7894
+tun:
+  enable: true
+  device: clash-tun
+  stack: gvisor
+  auto-route: true
+  auto-detect-interface: false
+
+dns:
+  enable: true
+  listen: 0.0.0.0:7874
+  ipv6: false
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter-mode: whitelist
+  default-nameserver:
+    - https://77.88.8.8/dns-query
+    - https://8.8.8.8/dns-query
+  nameserver:
+    - https://8.8.8.8/dns-query
+    - https://8.8.4.4/dns-query
+  proxy-server-nameserver:
+    - https://77.88.8.8/dns-query
+    - https://8.8.8.8/dns-query
+
+proxies:
+  - name: WARP
+    type: wireguard
+    server: engage.cloudflareclient.com
+    port: 2408
+    ip: 172.16.0.2
+    private-key: *warp-priv
+    public-key: bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=
+    mtu: 1280
+    udp: true
+    reserved: [0, 0, 0]
+
+proxy-providers:
+  Blanc:
+    type: http
+    url: *blanc-url
+    path: ./proxy_providers/blanc.yaml
+    interval: 3600
+
+proxy-groups:
+  - name: GLOBAL
+    type: select
+    proxies:
+      - WARP
+      - DIRECT
+    include-all: true
+
+rules:
+  - MATCH,GLOBAL
